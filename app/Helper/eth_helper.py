@@ -18,6 +18,11 @@ def get_chain_connection():
 
 
 def get_blocks(number_of_latest_blocks):
+    """
+    Using this method we store the transactions of specified number of latest blocks.
+    :param number_of_latest_blocks:
+    :return:
+    """
     try:
         eth_connect = get_chain_connection()
         max_block_num = eth_connect.eth.blockNumber

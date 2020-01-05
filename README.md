@@ -35,7 +35,9 @@ Setup Guide:-
     in app/Helper directory.
     
 
-(4) Open the terminal and install all the requirements using requirements.txt using "pip install -r requirements.txt".
+(4) Open the terminal and install all the requirements using requirements.txt using
+      
+      $ pip install -r requirements.txt
  
 (5) Get into app directory in terminal and execute these two steps:-
         

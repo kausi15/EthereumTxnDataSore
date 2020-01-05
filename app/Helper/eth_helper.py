@@ -1,5 +1,4 @@
 from web3 import Web3, HTTPProvider
-import os
 from .db_help import store_txn
 
 
@@ -8,7 +7,7 @@ def get_chain_connection():
     Using this method we can connect to Ethereum chain.
     :return chain_connect:
     """
-    chain_url = os.environ['KOVAN_URL']
+    chain_url = "https://kovan.infura.io/v3/5e66f831443940ed88e9adca82578c2b"
     check_ = False
     chain_connect = ''
     while not check_:
@@ -29,13 +28,12 @@ def get_blocks(number_of_latest_blocks):
         min_block_num = max_block_num - number_of_latest_blocks
         for i in range(min_block_num, max_block_num):
             block_data = eth_connect.eth.getBlock(i, full_transactions=True)
-            if len(block_data['transactions']) == 0:
-                continue
-            for z in block_data['transactions']:
-                check_flag_ = False
-                while not check_flag_:
-                    check_flag_ = store_txn(from_=z['from'], to_=z['to'], block_number=z['blockNumber'],
-                                            transaction_hash=z['hash'])
+            if len(block_data['transactions']) != 0:
+                for z in block_data['transactions']:
+                    check_flag_ = False
+                    while check_flag_ is False:
+                        check_flag_ = store_txn(from_=z['from'], to_=z['to'], block_number=z['blockNumber'],
+                                                transaction_hash=z['hash'])
         return True
     except:
         return False

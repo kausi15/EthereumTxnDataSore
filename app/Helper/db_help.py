@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-import os
 
 
 def get_db_connection():
@@ -7,10 +6,10 @@ def get_db_connection():
     Using ths method we get a connection with mongodb
     :return db connect:
     """
-    mongo_uri = 'mongodb://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ['MONGODB_PASSWORD'] + '@' +\
-                os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
+    mongo_uri = "Enter the mongodb url here"
+
     db = MongoClient(mongo_uri)
-    return db
+    return db.test
 
 
 def store_txn(from_, to_, block_number, transaction_hash):
@@ -39,7 +38,8 @@ def get_txn(account_address):
     """
     try:
         db = get_db_connection()
-        txn_list = db.performRegex.find({'txns': {'$regex': '^' + account_address + ''}}).pretty()
+        project = {'from': 1, 'to': 1, 'blockNumber': 1, 'transactionHash': 1, "_id": 0}
+        txn_list = db.txns.find({"$or": [{'from': account_address}, {'to': account_address}]}, project)
         return txn_list
     except:
         return False
